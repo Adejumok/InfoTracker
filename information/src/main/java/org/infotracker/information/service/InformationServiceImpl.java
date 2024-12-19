@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Optional;
 
@@ -33,7 +34,6 @@ public class InformationServiceImpl implements InformationService{
                 .title(request.getTitle())
                 .description(request.getDescription())
                 .build();
-//        repository.save(information);
         log.info("checking info....... {}", information);
         checkInformationVerificationStatus(information);
 
@@ -46,21 +46,19 @@ public class InformationServiceImpl implements InformationService{
     }
     private void checkInformationVerificationStatus(Information information) {
         String url = verificationUrl + "/verification/verifyInformation";
-        RestTemplate restTemplate = new RestTemplate();
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
+        WebClient webClient = WebClient.builder().build();
 
-//        HttpEntity<Information> entity = new HttpEntity<>(information, headers);
-//        ResponseEntity<VerificationResponse> informationResponse = restTemplate.exchange(
-//                url, HttpMethod.GET, entity, VerificationResponse.class);
+        VerificationResponse informationResponse = webClient.post()
+                .uri(url)
+                .bodyValue(information)
+                .retrieve()
+                .bodyToMono(VerificationResponse.class)
+                .block();
 
-        ResponseEntity<VerificationResponse> informationResponse = restTemplate.postForEntity(url, information, VerificationResponse.class);
-
-        VerificationResponse result = informationResponse.getBody();
-
-        boolean isVerified = informationResponse.getStatusCode() == HttpStatus.OK && result != null && result.isVerified();
+        if (informationResponse != null){
+        boolean isVerified = informationResponse.isVerified();
         information.setVerified(isVerified);
-        repository.save(information);
+        repository.save(information);}
     }
 
     @Override

@@ -8,6 +8,8 @@ import org.infotracker.verification.service.VerificationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("api/infoTracker/verification/")
@@ -16,8 +18,8 @@ public class VerificationController {
     private VerificationService verificationService;
 
     @PostMapping("verifyInformation")
-    public ResponseEntity<VerificationResponse> verifyInformation(@RequestBody Information information){
-        VerificationResponse verificationResponse = verificationService.verifyInformation(information);
-        return new ResponseEntity<>(verificationResponse, HttpStatus.OK);
+    @ResponseStatus(HttpStatus.OK)
+    public VerificationResponse verifyInformation(@RequestBody Information information){
+        return verificationService.verifyInformation(information);
     }
 }

@@ -31,10 +31,10 @@
 		<java.version>21</java.version>
 		<spring.boot.maven.plugin.version>3.3.5</spring.boot.maven.plugin.version>
 		<spring.boot.dependencies.version>3.3.5</spring.boot.dependencies.version>
-		<mssql-jdbc.version>12.8.1.jre11</mssql-jdbc.version>
-		<spring-web-version>6.1.14</spring-web-version>
+<!--		<spring-web-version>6.1.14</spring-web-version>-->
 		<postgresql.version>42.7.4</postgresql.version>
 		<spring-cloud.version>2023.0.3</spring-cloud.version>
+		<spring-webflux.version>3.4.0</spring-webflux.version>
 	</properties>
 	<modules>
 		<module>information</module>
@@ -50,21 +50,24 @@
 				<version>${spring.boot.dependencies.version}</version>
 				<scope>import</scope>
 			</dependency>
+
+<!--			<dependency>-->
+<!--				<groupId>org.springframework</groupId>-->
+<!--				<artifactId>spring-web</artifactId>-->
+<!--				<version>${spring-web-version}</version>-->
+<!--			</dependency>-->
 			<dependency>
-				<groupId>com.microsoft.sqlserver</groupId>
-				<artifactId>mssql-jdbc</artifactId>
-				<version>${mssql-jdbc.version}</version>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-webflux</artifactId>
+				<version>${spring-webflux.version}</version>
 			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-web</artifactId>
-				<version>${spring-web-version}</version>
-			</dependency>
+
 			<dependency>
 				<groupId>org.postgresql</groupId>
 				<artifactId>postgresql</artifactId>
 				<version>${postgresql.version}</version>
 			</dependency>
+
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
